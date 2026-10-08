@@ -23,6 +23,7 @@ print("Device :", device)
 TRAIN_DIR = "melanoma-cancer-dataset/train"
 VAL_DIR   = "melanoma-cancer-dataset/test"
 NUM_EPOCHS = 20
+SEED = 42
 
 # Normalisation ImageNet utilisée par le modèle pré-entraîné
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
@@ -69,11 +70,13 @@ def run_training(model, optimizer, label):
     return history
 
 
+torch.manual_seed(SEED)
 resnet_gele = charger_resnet_gele(num_classes, device)
 optimizer_gele = optim.Adam(resnet_gele.fc.parameters(), lr=1e-3)
 
 history_gele = run_training(resnet_gele, optimizer_gele, "ResNet18 backbone gelé")
 
+torch.manual_seed(SEED)
 resnet_ft = charger_resnet_finetune(num_classes, device)
 optimizer_ft = optim.Adam([
     {"params": resnet_ft.layer4.parameters(), "lr": 1e-4},
