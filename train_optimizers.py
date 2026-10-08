@@ -19,6 +19,7 @@ print("Device :", device)
 TRAIN_DIR = "melanoma-cancer-dataset/train"
 VAL_DIR   = "melanoma-cancer-dataset/test"
 NUM_EPOCHS = 20
+SEED = 42
 
 dataset_stats = MelanomaDataset(TRAIN_DIR, transform=transforms.ToTensor())
 MEAN, STD = calculer_mean_std(dataset_stats)
@@ -45,6 +46,9 @@ criterion = nn.CrossEntropyLoss()
 
 for label, make_optim in configs:
     print(f"\n=== {label} ===")
+
+    # Même initialisation pour comparer les optimiseurs plus proprement.
+    torch.manual_seed(SEED)
     model = SimpleCNN(num_classes=num_classes).to(device)
     compter_parametres(model)
     optimizer = make_optim(model)
@@ -98,6 +102,10 @@ print("\n-- Recapitulatif final ---------------------------")
 print(f"{'Optimiseur':<18} {'Val Loss':>10} {'Val Acc':>10}")
 print("-" * 42)
 for label, history in resultats.items():
-    best_acc  = max(history["val_acc"])
-    final_loss = history["val_loss"][-1]
-    print(f"{label:<18} {final_loss:>10.4f} {best_acc:>10.4f}")
+    best_idx = max(
+        range(len(history["val_acc"])),
+        key=history["val_acc"].__getitem__,
+    )
+    best_acc = history["val_acc"][best_idx]
+    best_loss = history["val_loss"][best_idx]
+    print(f"{label:<18} {best_loss:>10.4f} {best_acc:>10.4f}")
