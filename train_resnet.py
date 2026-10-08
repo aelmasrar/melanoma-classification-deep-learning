@@ -51,7 +51,7 @@ def run_training(model, optimizer, label):
 
     for epoch in range(1, NUM_EPOCHS + 1):
         t0 = time.time()
-        train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, device)
+        train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, device, True)
         val_loss,   val_acc   = evaluate(model, val_loader, criterion, device)
         duree = time.time() - t0
 
