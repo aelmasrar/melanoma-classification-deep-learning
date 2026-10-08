@@ -20,6 +20,7 @@ TRAIN_DIR = "melanoma-cancer-dataset/train"
 VAL_DIR   = "melanoma-cancer-dataset/test"
 NUM_EPOCHS = 20
 SEED = 42
+SEED = 42
 
 dataset_stats = MelanomaDataset(TRAIN_DIR, transform=transforms.ToTensor())
 MEAN, STD = calculer_mean_std(dataset_stats)
@@ -47,6 +48,8 @@ criterion = nn.CrossEntropyLoss()
 for label, make_optim in configs:
     print(f"\n=== {label} ===")
 
+    # Même initialisation pour comparer les optimiseurs plus proprement.
+    torch.manual_seed(SEED)
     # Même initialisation pour comparer les optimiseurs plus proprement.
     torch.manual_seed(SEED)
     model = SimpleCNN(num_classes=num_classes).to(device)
