@@ -26,9 +26,17 @@ def calculer_mean_std(dataset):
     return mean.tolist(), std.tolist()
 
 
-def train_one_epoch(model, loader, criterion, optimizer, device):
+def train_one_epoch(model, loader, criterion, optimizer, device, freeze_frozen_bn=False):
     """Effectue une epoch d'entraînement. Retourne (loss_moyenne, accuracy)."""
     model.train()
+
+    # Les BatchNorm des parties gelées gardent leurs statistiques pré-entraînées.
+    if freeze_frozen_bn:
+        for module in model.modules():
+            if isinstance(module, torch.nn.modules.batchnorm._BatchNorm):
+                if all(not p.requires_grad for p in module.parameters()):
+                    module.eval()
+
     total_loss, total_correct, total_samples = 0.0, 0, 0
 
     for images, labels in loader:
