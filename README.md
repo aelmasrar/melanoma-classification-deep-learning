@@ -1,36 +1,34 @@
-# Melanoma Classification with Deep Learning
+# Classification de mélanomes par Deep Learning
 
-Projet de classification d'images de lésions cutanées avec PyTorch. L'objectif est de comparer plusieurs approches de Deep Learning pour distinguer les images bénignes des mélanomes.
+Dans ce projet académique, j'ai travaillé sur la classification d'images de lésions cutanées avec PyTorch. L'objectif était de distinguer les lésions bénignes des mélanomes et de comparer plusieurs approches de Deep Learning.
 
-## Approches étudiées
+## Méthodes testées
 
-- CNN entraîné from scratch
-- normalisation des images
-- data augmentation
-- comparaison de plusieurs optimiseurs
-- learning rate scheduler
-- transfer learning avec ResNet18
-- fine-tuning de ResNet18
+J'ai commencé par entraîner un CNN à partir de zéro. J'ai travaillé sur la normalisation des images et la data augmentation. J'ai aussi comparé plusieurs optimiseurs et utilisé un learning rate scheduler.
 
-## Résultat principal
+J'ai ensuite testé le transfer learning avec ResNet18, puis le fine-tuning du dernier bloc convolutif et de la couche de classification.
 
-Le meilleur résultat obtenu dans les expériences sauvegardées vient du fine-tuning de ResNet18.
+## Résultats
 
-- Accuracy : **95,55 %** sur 2 000 images
-- Rappel de la classe mélanome : **94,70 %**
-- 1 911 images correctement classées sur 2 000
+Le meilleur résultat enregistré a été obtenu avec le fine-tuning de ResNet18 :
 
-Ces résultats correspondent à l'ensemble `melanoma-cancer-dataset/test`, utilisé comme ensemble d'évaluation dans les scripts du projet.
+- **Accuracy : 95,55 %** sur 2 000 images ;
+- **Rappel mélanome : 94,70 %** ;
+- **1 911 images correctement classées** sur 2 000.
 
-![Courbes ResNet18](courbes_resnet.png)
+Ces résultats concernent le dossier `melanoma-cancer-dataset/test`, utilisé comme ensemble d'évaluation dans les scripts. Ils ne correspondent donc pas à une validation clinique indépendante.
+
+![Courbes d'entraînement ResNet18](courbes_resnet.png)
 
 ![Matrice de confusion](matrice_confusion.png)
 
-## Organisation
+## Organisation du projet
 
-Les scripts permettent de tester progressivement les différentes stratégies d'entraînement. `train_resnet.py` compare un ResNet18 avec backbone gelé et un fine-tuning du dernier bloc. `analyze.py` charge le modèle entraîné et génère la matrice de confusion ainsi que le rapport de classification.
+Le fichier `train_resnet.py` compare un ResNet18 dont le backbone est gelé avec une version où le dernier bloc est entraîné.
 
-Le dataset est organisé dans :
+Le fichier `analyze.py` charge le modèle sauvegardé et génère la matrice de confusion et le rapport de classification.
+
+Le jeu de données est organisé ainsi :
 
 ```text
 melanoma-cancer-dataset/
@@ -38,26 +36,16 @@ melanoma-cancer-dataset/
 └── test/
 ```
 
-## Installation
+## Installation et exécution
 
 ```bash
 pip install -r requirements.txt
-```
-
-Exemple pour lancer l'expérience ResNet18 :
-
-```bash
 python train_resnet.py
-```
-
-Puis pour analyser le modèle sauvegardé :
-
-```bash
 python analyze.py
 ```
 
-## Technologies
+## Outils
 
 Python, PyTorch, Torchvision, NumPy, Matplotlib, Pillow et scikit-learn.
 
-> Projet académique de classification d'images. Les résultats obtenus ne constituent pas une validation pour un usage clinique.
+Ce projet est une étude académique. Les résultats ne permettent pas d'utiliser le modèle pour un diagnostic médical.
